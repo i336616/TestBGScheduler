@@ -39,6 +39,10 @@ class BackgroundTaskService {
 	var tasksExecuted = [String]()
 	
 	func registerLaunchHandlers() {
+		if let tasks = UserDefaults.standard.value(forKey: "tasksExecuted") as? [String] {
+			tasksExecuted = tasks
+		}
+
 		cancelAllTaskRequests()
 
 		BGTaskScheduler.shared.register(forTaskWithIdentifier: refreshBGIdentifier, using: DispatchQueue.global()) { task in

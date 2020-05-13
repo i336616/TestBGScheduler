@@ -18,20 +18,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
-		backgroundTaskService.cancelAllTaskRequests()
 		backgroundTaskService.registerLaunchHandlers()
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
-		print("#",#line,#function)
 		//backgroundTaskService.cancelAllTaskRequests()
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
-		print("#",#line,#function)
 		backgroundTaskService.scheduleAppRefresh()
 	}
-
 
 }
 

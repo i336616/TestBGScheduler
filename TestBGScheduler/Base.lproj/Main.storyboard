@@ -15,24 +15,37 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bTZ-6Q-tWQ">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="C6z-4w-wA1">
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="bTZ-6Q-tWQ">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="788"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                        <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                    </textView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cQY-Nn-a91">
+                                        <rect key="frame" x="0.0" y="788" width="414" height="30"/>
+                                        <state key="normal" title="Clear"/>
+                                        <connections>
+                                            <action selector="didTapClearButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="aCm-iy-u1l"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="bTZ-6Q-tWQ" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="7gE-yd-yYA"/>
-                            <constraint firstItem="bTZ-6Q-tWQ" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="BAd-Ek-sQt"/>
-                            <constraint firstItem="bTZ-6Q-tWQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="iIK-Qd-LzQ"/>
-                            <constraint firstItem="bTZ-6Q-tWQ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="kg3-05-O0h"/>
+                            <constraint firstItem="C6z-4w-wA1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="HdR-Gy-4yN"/>
+                            <constraint firstItem="C6z-4w-wA1" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="PcT-1W-Hko"/>
+                            <constraint firstItem="C6z-4w-wA1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="TpN-mN-bmY"/>
+                            <constraint firstItem="C6z-4w-wA1" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="lpH-xl-W7y"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="clearButton" destination="cQY-Nn-a91" id="Ddt-Dh-sDq"/>
                         <outlet property="textView" destination="bTZ-6Q-tWQ" id="2n5-nj-cGU"/>
                     </connections>
                 </viewController>

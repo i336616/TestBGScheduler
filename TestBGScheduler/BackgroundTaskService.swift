@@ -8,13 +8,15 @@
 
 /*
 
-Build and run your app
-Background it to schedule the task
-Bring the app to the foreground again
-Hit the pause button in the debugger
-Simulate a receiving an event in console:
+- Build and run your app
+- Background it to schedule the task
+- Pause the debugger
+- Simulate a receiving an event in console:
+    e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.Lmd64.TestBGScheduler.refresh"]
+- Unpause the debugger
+- Bring the app to the foreground again
 
-(llbd) e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"com.Lmd64.TestBGScheduler.refresh"]
+UI should be updated with messages from the background tasks
 
 */
 
@@ -22,16 +24,6 @@ Simulate a receiving an event in console:
 import Foundation
 import BackgroundTasks
 import UserNotifications
-
-extension Date {
-	func roundedDate(byAdding minutes: TimeInterval) -> Date {
-		let date = Date().addingTimeInterval(minutes)
-		let calendar = Calendar.current
-		let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
-		let roundedDate = calendar.date(bySettingHour: components.hour ?? 0, minute: components.minute ?? 0, second: 0, of: date) ?? date
-		return roundedDate
-	}
-}
 
 protocol BackgroundTaskServiceDelegate {
 	func didUpdateBackgroundService()
@@ -47,76 +39,89 @@ class BackgroundTaskService {
 	var tasksExecuted = [String]()
 	
 	func registerLaunchHandlers() {
-		print("#",#line,#function,"refreshBGIdentifier:",refreshBGIdentifier)
+		cancelAllTaskRequests()
 
-		let didRegisterRefreshBGIdentifier = BGTaskScheduler.shared.register(forTaskWithIdentifier: refreshBGIdentifier, using: nil) { task in
-			print("#",#line,#function,"forTaskWithIdentifier: refreshBGIdentifier called")
-			guard let task = task as? BGAppRefreshTask else { return }
-			self.handleAppRefresh(task: task)
+		BGTaskScheduler.shared.register(forTaskWithIdentifier: refreshBGIdentifier, using: DispatchQueue.global()) { task in
+			self.handleTask(task: task)
 		}
 
-		print("#",#line,#function,"didRegisterRefreshBGIdentifier =",didRegisterRefreshBGIdentifier)
 	}
 
+	var taskRequest: BGTaskRequest?
+	
     func scheduleAppRefresh() {
-		print("#",#line,#function)
+		BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: refreshBGIdentifier)
 
-		let scheduleDate = Date().roundedDate(byAdding: 1 * 60)
-		print("#",#line,#function,"now          :",Date())
-		print("#",#line,#function,"scheduleDate :",scheduleDate)
-
-		let request = BGAppRefreshTaskRequest(identifier: refreshBGIdentifier)
-		//let request = BGProcessingTaskRequest(identifier: refreshBGIdentifier)
-		//request.requiresExternalPower = true
-		//request.requiresNetworkConnectivity = true
-        request.earliestBeginDate = scheduleDate
-        do {
+		//let request = appRefreshTaskRequest()
+		let request = processingTaskRequest()
+		
+		print("#",#line,#function,"scheduling ",NSStringFromClass(type(of: request)))
+		
+		taskRequest = request
+		do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
             print("Could not schedule app refresh: \(error)")
         }
-		print()
+    }
+	
+	func appRefreshTaskRequest(timeInterval: Int = 10) -> BGTaskRequest {
+		let scheduleDate = Calendar.current.date(byAdding: .second, value: timeInterval, to: Date())
+		let request = BGAppRefreshTaskRequest(identifier: refreshBGIdentifier)
+		request.earliestBeginDate = scheduleDate
+		return request
     }
 
-    func handleAppRefresh(task: BGAppRefreshTask) {
-		print("#",#line,#function)
-        scheduleAppRefresh()
+	func processingTaskRequest(timeInterval: Int = 10) -> BGTaskRequest {
+		let scheduleDate = Calendar.current.date(byAdding: .second, value: timeInterval, to: Date())
+		let request = BGProcessingTaskRequest(identifier: refreshBGIdentifier)
+		request.earliestBeginDate = scheduleDate
+		request.requiresExternalPower = false
+		request.requiresNetworkConnectivity = true
+		return request
+	}
+
+    func handleTask(task: BGTask) {
+        
+		scheduleAppRefresh()
 
         let queue = OperationQueue()
         queue.maxConcurrentOperationCount = 1
 
         let operations = [
-			BlockOperation {
-				print("#",#line,#function,"BlockOperation-1")
-				self.tasksExecuted.append("BlockOperation-1-\(Date())")
-			},
-			BlockOperation {
-				print("#",#line,#function,"BlockOperation-2")
-				self.tasksExecuted.append("BlockOperation-2-\(Date())")
-			},
-			BlockOperation {
-				print("#",#line,#function,"BlockOperation-3")
-				self.tasksExecuted.append("BlockOperation-3-\(Date())")
-			}
+			operation(message: "\(NSStringFromClass(type(of: task)))-BlockOperation-1-\(Date())"),
+			operation(message: "\(NSStringFromClass(type(of: task)))-BlockOperation-2-\(Date())"),
+			operation(message: "\(NSStringFromClass(type(of: task)))-BlockOperation-3-\(Date())")
 		]
 
-		guard let lastOperation = operations.last else { return }
+		guard let lastOperation = operations.last else {
+			task.setTaskCompleted(success: true)
+			return
+		}
 
         task.expirationHandler = {
-			print("#",#line,#function,"task.expirationHandler")
             queue.cancelAllOperations()
         }
         lastOperation.completionBlock = {
-			print("#",#line,#function, "lastOperation.completionBlock")
             task.setTaskCompleted(success: !lastOperation.isCancelled)
 			self.delegate?.didUpdateBackgroundService()
+			queue.cancelAllOperations()
+			task.setTaskCompleted(success: true)
         }
-        queue.addOperations(operations, waitUntilFinished: false)
+        queue.addOperations(operations, waitUntilFinished: true)
     }
 
+	
 	func cancelAllTaskRequests() {
-		print("#",#line,#function)
 		BGTaskScheduler.shared.cancelAllTaskRequests()
+	}
+
+	func operation(message: String, seconds: UInt32 = 2) -> BlockOperation {
+		return BlockOperation {
+			do { sleep(seconds) }
+			self.tasksExecuted.append(message)
+			self.delegate?.didUpdateBackgroundService()
+		}
 	}
 
 }

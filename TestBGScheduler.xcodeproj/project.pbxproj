@@ -13,6 +13,8 @@
 		136BBA76246BFB9500501C74 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 136BBA74246BFB9500501C74 /* Main.storyboard */; };
 		136BBA78246BFB9800501C74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 136BBA77246BFB9800501C74 /* Assets.xcassets */; };
 		136BBA7B246BFB9800501C74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 136BBA79246BFB9800501C74 /* LaunchScreen.storyboard */; };
+		136BBA83246BFBA700501C74 /* BackgroundTaskService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 136BBA82246BFBA700501C74 /* BackgroundTaskService.swift */; };
+		136BBA85246C41E500501C74 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 136BBA84246C41E500501C74 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		136BBA77246BFB9800501C74 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		136BBA7A246BFB9800501C74 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		136BBA7C246BFB9800501C74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		136BBA82246BFBA700501C74 /* BackgroundTaskService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackgroundTaskService.swift; sourceTree = "<group>"; };
+		136BBA84246C41E500501C74 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -40,6 +44,7 @@
 		136BBA62246BFB9500501C74 = {
 			isa = PBXGroup;
 			children = (
+				136BBA84246C41E500501C74 /* README.md */,
 				136BBA6D246BFB9500501C74 /* TestBGScheduler */,
 				136BBA6C246BFB9500501C74 /* Products */,
 			);
@@ -59,6 +64,7 @@
 				136BBA6E246BFB9500501C74 /* AppDelegate.swift */,
 				136BBA70246BFB9500501C74 /* SceneDelegate.swift */,
 				136BBA72246BFB9500501C74 /* ViewController.swift */,
+				136BBA82246BFBA700501C74 /* BackgroundTaskService.swift */,
 				136BBA74246BFB9500501C74 /* Main.storyboard */,
 				136BBA77246BFB9800501C74 /* Assets.xcassets */,
 				136BBA79246BFB9800501C74 /* LaunchScreen.storyboard */,
@@ -127,6 +133,7 @@
 			files = (
 				136BBA7B246BFB9800501C74 /* LaunchScreen.storyboard in Resources */,
 				136BBA78246BFB9800501C74 /* Assets.xcassets in Resources */,
+				136BBA85246C41E500501C74 /* README.md in Resources */,
 				136BBA76246BFB9500501C74 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,6 +147,7 @@
 			files = (
 				136BBA73246BFB9500501C74 /* ViewController.swift in Sources */,
 				136BBA6F246BFB9500501C74 /* AppDelegate.swift in Sources */,
+				136BBA83246BFBA700501C74 /* BackgroundTaskService.swift in Sources */,
 				136BBA71246BFB9500501C74 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -287,6 +295,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERF2T2UNH6;
 				INFOPLIST_FILE = TestBGScheduler/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,6 +314,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ERF2T2UNH6;
 				INFOPLIST_FILE = TestBGScheduler/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -52,8 +52,8 @@ class BackgroundTaskService {
     func scheduleAppRefresh() {
 		BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: refreshBGIdentifier)
 
-		//let request = appRefreshTaskRequest()
-		let request = processingTaskRequest()
+		let request = appRefreshTaskRequest(timeInterval: 60)
+		//let request = processingTaskRequest()
 		
 		print("#",#line,#function,"scheduling ",NSStringFromClass(type(of: request)))
 		
@@ -120,6 +120,7 @@ class BackgroundTaskService {
 		return BlockOperation {
 			do { sleep(seconds) }
 			self.tasksExecuted.append(message)
+			UserDefaults.standard.set(self.tasksExecuted, forKey: "tasksExecuted")
 			self.delegate?.didUpdateBackgroundService()
 		}
 	}

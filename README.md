@@ -11,14 +11,17 @@ To simulate long-lived background tasks, we're using the sleep function from UNI
 
 These operations will be completed on the thread they were executed on (which will be a background thread, so don't do any UI updates here)
 
-The app is set to trigger the background task 10 seconds after backgrounding by default. The background task triggers 3 test operations, each test operation is set to 2 seconds long.
+The app is set to trigger the background task 60 seconds after backgrounding by default. The background task triggers 3 test operations, each test operation is set to 2 seconds long.
 
-The background task is set to repeat every 10 seconds. On re-entering the app, the text view should be populated with multiple repeated descriptions of the test operations.
+The background task is set to repeat every 60 seconds. On re-entering the app, the text view should be populated with multiple repeated descriptions of the test operations.
 
 **A few caveats:**
 - The background scheduler can only be run on a hardware device, it will not work on the simulator
 - When debugging an app from Xcode, the app will not go into the background, even if the user taps the home button/task switcher
 - To test background scheduling while in tethered debug mode, the tester will need follow the steps below to simulate launching the app in the background with the specified identifier 
+
+Outstanding Issue:
+- We can trigger the background tasks manually when tehtered to Xcode. However, we haven't been able to get the background tasks to work when the app is run standalone.  
 
 ## Usage
 

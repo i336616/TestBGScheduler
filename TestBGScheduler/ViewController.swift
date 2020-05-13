@@ -25,6 +25,7 @@ class ViewController: UIViewController {
 	
 	@IBAction func didTapClearButton(_ sender: Any) {
 		BackgroundTaskService.shared.tasksExecuted = []
+		UserDefaults.standard.set(BackgroundTaskService.shared.tasksExecuted, forKey: "tasksExecuted")
 		didUpdateBackgroundService()
 	}
 	
@@ -33,7 +34,7 @@ class ViewController: UIViewController {
 extension ViewController: BackgroundTaskServiceDelegate {
 	func didUpdateBackgroundService() {
 		DispatchQueue.main.async {
-			let tasks = BackgroundTaskService.shared.tasksExecuted
+			guard let tasks = UserDefaults.standard.value(forKey: "tasksExecuted") as? [String] else { return }
 			print("#",#line,#function,tasks)
 			self.textView.text = tasks.joined(separator: "\n")
 			self.clearButton.isEnabled = !tasks.isEmpty

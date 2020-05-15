@@ -5,6 +5,12 @@ This app illustrates how to perform `BGAppRefreshTasks` & `BGProcessingTasks` wh
 - `BGAppRefreshTasks` get a maximum of 30 seconds execution time
 - `BGProcessingTasks` get longer periods
 
+The BGTaskScheduler requires a shortlist of task identifiers to be added to the target properties. These identifiers are used when calling `register(forTaskWithIdentifier: using:)` on `BGTaskScheduler`
+For this test app, we've set it as follows in `Info.plist`:
+
+	Permitted background task scheduler identifiers: com.Lmd64.TestBGScheduler.refresh
+
+
 To simulate long-lived background tasks, we're using the sleep function from UNIX for our test background operations:
 
 	do { sleep(seconds) }
@@ -21,7 +27,7 @@ The background task is set to repeat every 60 seconds. On re-entering the app, t
 - To test background scheduling while in tethered debug mode, the tester will need follow the steps below to simulate launching the app in the background with the specified identifier 
 
 Outstanding Issue:
-- We can trigger the background tasks manually when tehtered to Xcode. However, we haven't been able to get the background tasks to work when the app is run standalone.  
+- We can trigger the background tasks manually when tethered to Xcode. However, we haven't been able to get the background tasks to work when the app is run standalone.  
 
 ## Usage
 
